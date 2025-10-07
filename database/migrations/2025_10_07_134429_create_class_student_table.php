@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('school_class_student', function (Blueprint $table) {
-            // Updated to reference school_classes table
+            // This line MUST reference 'school_classes'
             $table->foreignId('school_class_id')->constrained('school_classes')->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
-            // Updated primary key
             $table->primary(['school_class_id', 'student_id']);
         });
     }

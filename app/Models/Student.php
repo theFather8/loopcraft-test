@@ -21,8 +21,8 @@ class Student extends Model
         'birthdate' => 'date',
     ];
 
-    // public function classes(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Class::class);
-    // }
+    public function classes(): BelongsToMany
+    {
+        return $this->belongsToMany(SchoolClass::class);
+    }
 }
