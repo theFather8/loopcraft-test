@@ -1,61 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Student Enrollment API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modular RESTful API for a school management system, built with Laravel 12, for managing student enrollment and class assignments.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   Admin authentication using Laravel Sanctum.
+-   Role-based access control (Admin-only).
+-   Full CRUD operations for Students and Classes.
+-   Many-to-many relationship for class assignments.
+-   Business logic to prevent over-enrollment and duplicate assignments.
+-   Performance optimized with Eager Loading.
+-   Input validation using Form Requests.
+-   Comprehensive Feature and Unit tests.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   PHP 8.2+
+-   Composer
+-   MySQL
+-   Laravel 12
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1.  Clone the repository.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    ```bash
+    git clone <your-repo-url>
+    cd loopcraft-test
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2.  Install dependencies.
 
-## Laravel Sponsors
+    ```bash
+    composer install
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3.  Create a copy of the `.env.example` file and name it `.env`. Configure your database credentials in this file.
 
-### Premium Partners
+4.  Generate an application key.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+    ```bash
+    php artisan key:generate
+    ```
 
-## Contributing
+5.  Run the database migrations and seeders.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
 
-## Code of Conduct
+6.  Start the development server.
+    ```bash
+    php artisan serve
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## API Endpoints
 
-## Security Vulnerabilities
+All endpoints are prefixed with `/api/v1`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Authentication
 
-## License
+-   `POST /admin/login` - Logs in an admin and returns a Sanctum token.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Protected Endpoints (Require Admin Role)
+
+-   `POST /admin/logout` - Logs out the authenticated admin.
+-   `GET /students` - Get a list of all students.
+-   `POST /students` - Create a new student.
+-   `GET /students/{id}` - Get a specific student.
+-   `PATCH /students/{id}` - Update a student.
+-   `DELETE /students/{id}` - Delete a student.
+-   `POST /students/{student}/classes/{class}` - Assign a student to a class.
+-   `GET /classes` - Get a list of all classes.
+-   `POST /classes` - Create a new class.
+-   `GET /classes/{id}` - Get a specific class.
+-   `PATCH /classes/{id}` - Update a class.
+-   `DELETE /classes/{id}` - Delete a class.
+
+## Default Admin
+
+After running the seeders, you can log in with:
+
+-   **Email:** `admin@example.com`
+-   **Password:** `password`
+
+## Testing
+
+Run the test suite:
+
+```bash
+php artisan test
+```
