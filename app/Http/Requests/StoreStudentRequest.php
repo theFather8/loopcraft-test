@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreStudentRequest extends FormRequest
 {
@@ -12,6 +12,7 @@ class StoreStudentRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // For now, we'll return true. The route middleware will handle authorization.
         return true;
     }
 
@@ -29,10 +30,10 @@ class StoreStudentRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('students'),
+                Rule::unique('students'), // Ensures the email is unique in the 'students' table
             ],
             'birthdate' => 'required|date',
-            'grade' => 'required|string|max:50'
+            'grade' => 'required|string|max:50',
         ];
     }
 }

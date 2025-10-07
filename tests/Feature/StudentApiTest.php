@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role; 
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
@@ -14,6 +15,10 @@ class StudentApiTest extends TestCase
     public function test_admin_can_create_a_student(): void
     {
         $admin = Admin::factory()->create();
+
+        $role = Role::create(['name' => 'admin', 'guard_name' => 'api']);
+        $admin->assignRole($role);
+
         $token = $admin->createToken('test-token')->plainTextToken;
 
         $studentData = [
