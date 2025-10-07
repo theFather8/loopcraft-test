@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SchoolClass;
+use App\Http\Requests\StoreStudentRequest;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        // eager loading
+        $students = Student::with('classes')->get();
+
+        return response()->json($students);
     }
 
     /**
@@ -21,7 +25,11 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        $student = Student::create($validatedData);
+
+        return response()->json($student, 201);
     }
 
     /**
