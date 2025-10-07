@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SchoolClass;
 use App\Http\Requests\StoreStudentRequest;
 use App\Models\Student;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -35,25 +36,46 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Student $student)
     {
-        //
+        // Eager load the classes for this specific student
+        $student->load('classes');
+
+        return response()->json($student);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Student $student)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'email' => [
+                'sometimes',
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('students')->ignore($student->id), // Ignore current student's email
+            ],
+            'birthdate' => 'sometimes|required|date',
+            'grade' => 'sometimes|required|string|max:50',
+        ]);
+
+        $student->update($validatedData);
+
+        return response()->json($student);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Student $student)
     {
-        //
+        $student->delete();
+
+        return response()->noContent(); 
     }
 
     public function assignClass(Student $student, SchoolClass $schoolClass)
