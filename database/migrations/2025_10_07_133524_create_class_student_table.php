@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('class_student', function (Blueprint $table) {
-            $table->foreignId('class_id')->constrained()->onDelete('cascade');
+        Schema::create('school_class_student', function (Blueprint $table) {
+            // Updated to reference school_classes table
+            $table->foreignId('school_class_id')->constrained('school_classes')->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
-            // Prevents a student from being assigned to the same class multiple times
-            $table->primary(['class_id', 'student_id']);
+            // Updated primary key
+            $table->primary(['school_class_id', 'student_id']);
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('class_student');
+        Schema::dropIfExists('school_class_student');
     }
 };
