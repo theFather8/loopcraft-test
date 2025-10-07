@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SchoolClass; 
+use App\Models\SchoolClass;
+use Illuminate\Support\Facades\Log;
 
 class SchoolClassController extends Controller
 {
@@ -36,8 +37,10 @@ class SchoolClassController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SchoolClass $schoolClass)
+    public function show($id)
     {
+        $schoolClass = SchoolClass::findOrFail($id);
+
         $schoolClass->load('students');
 
         return response()->json($schoolClass);
@@ -46,8 +49,11 @@ class SchoolClassController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SchoolClass $schoolClass)
+    public function update(Request $request, SchoolClass $schoolClass, $id)
     {
+        // Log::info('SchoolClass update method was called!');
+        $schoolClass = SchoolClass::findOrFail($id);
+
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'section' => 'sometimes|required|string|max:10',
@@ -62,8 +68,10 @@ class SchoolClassController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SchoolClass $schoolClass)
+    public function destroy($id)
     {
+        $schoolClass = SchoolClass::findOrFail($id);
+
         $schoolClass->delete();
 
         return response()->noContent(); 
